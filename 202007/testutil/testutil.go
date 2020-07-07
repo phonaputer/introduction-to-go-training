@@ -2,7 +2,7 @@ package testutil
 
 import "testing"
 
-func AssertEqualMsg(t *testing.T, expected, actual interface{}, format string, args ...interface{}) {
+func AssertEqualMsgf(t *testing.T, expected, actual interface{}, format string, args ...interface{}) {
 	if actual != expected {
 		sprintArgs := []interface{}{expected, actual}
 		sprintArgs = append(sprintArgs, args...)
@@ -11,5 +11,21 @@ func AssertEqualMsg(t *testing.T, expected, actual interface{}, format string, a
 }
 
 func AssertEqual(t *testing.T, expected, actual interface{}) {
-	AssertEqualMsg(t, expected, actual, "Expected '%v' but got '%v'")
+	AssertEqualMsgf(t, expected, actual, "Expected '%v' but got '%v'")
+}
+
+func AssertEqualMsg(t *testing.T, expected, actual interface{}, msg string) {
+	if actual != expected {
+		t.Fatal(msg)
+	}
+}
+
+func AssertErrNil(t *testing.T, theErr error, shouldBeNil bool) {
+	if shouldBeNil && theErr != nil {
+		t.Fatal("The result error should be nil!")
+	}
+
+	if !shouldBeNil && theErr == nil {
+		t.Fatal("The result error should NOT be nil!")
+	}
 }
