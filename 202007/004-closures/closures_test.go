@@ -1,8 +1,9 @@
 package closures
 
-import
-("testing"
-"../testutil")
+import (
+	"../testutil"
+	"testing"
+)
 
 // Tests for GetAdderSubber
 
@@ -37,13 +38,13 @@ func TestGetAdderSubber_InitialStateCanBeModifiedWithAdderAndSubber(t *testing.T
 // Tests for GetAggregator
 
 func TestGetAggregator_AnyInput_InternalStateStartsAtZero(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int {return a})
+	aggr := GetAggregator(func(a, b int) int { return a })
 
 	testutil.AssertEqual(t, 0, aggr(0))
 }
 
 func TestGetAggregator_AdditionFunc_AggrWorksForAddition(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int {return a + b + 5})
+	aggr := GetAggregator(func(a, b int) int { return a + b + 5 })
 
 	testutil.AssertEqual(t, 5, aggr(0))
 	testutil.AssertEqual(t, 0, aggr(-10))
@@ -51,7 +52,7 @@ func TestGetAggregator_AdditionFunc_AggrWorksForAddition(t *testing.T) {
 }
 
 func TestGetAggregator_MultiplicationFunc_AggrWorksForMultiplication(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int {return a * b + 1})
+	aggr := GetAggregator(func(a, b int) int { return a*b + 1 })
 
 	testutil.AssertEqual(t, 1, aggr(0))
 	testutil.AssertEqual(t, -9, aggr(-10))
@@ -59,7 +60,7 @@ func TestGetAggregator_MultiplicationFunc_AggrWorksForMultiplication(t *testing.
 }
 
 func TestGetAggregator_SubtractionFunc_AggrSubtractsInputFromState(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int {return a - b})
+	aggr := GetAggregator(func(a, b int) int { return a - b })
 
 	testutil.AssertEqual(t, 0, aggr(0))
 	testutil.AssertEqual(t, 10, aggr(-10))
