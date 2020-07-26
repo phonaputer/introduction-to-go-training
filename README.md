@@ -16,7 +16,7 @@ Fill in the empty functions in your branch and push it to origin when you are do
 
 To do the homework you will need to install Go 1.14 on your local machine.
 You can do this with your package manager of choice.
-Or, if you prefer, you can download it as a tar following these instructions: https://golang.org/doc/install
+Or you can download an installer (or tar archive) by following the instructions on the Go website: https://golang.org/doc/install
 
 ## How to verify your answers locally
 
