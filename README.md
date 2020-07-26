@@ -44,3 +44,21 @@ When you finish the homework, push your branch open a pull request to the `maste
 The instructor will check your code and leave comments - or let you know if the code looks good.
 If you need help or can't complete any problems, open a pull request and let the instructor know.
 The instructor will check your code and leave comments to help you solve your problem.
+
+## Useful commands
+
+Here are some useful go CLI commands:
+
+```
+# Format source file
+go fmt ${PATH_TO_SOURCE_FILE}
+
+# Format all source files (run this in the project's root directory)
+go fmt ./...
+
+# Verify that a source file compiles
+go build ${PATH_TO_SOURCE_FILE}
+
+# Run unit tests
+go test ${PATH_TO_TEST_FILE_AND_TESTED_SOURCE_FILE}
+```
