@@ -35,7 +35,7 @@ type Dog interface {
 	SetIsGoodBoy(isGoodBoy bool)
 }
 
-// Use this struct when writing your Dog implementation
+// Use this struct when writing your Dog implementation (But don't modify it. Hint: you can embed structs)
 type Canid struct{}
 
 func (n Canid) MakeNoise() string {
