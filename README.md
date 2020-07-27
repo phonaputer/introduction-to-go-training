@@ -1,3 +1,7 @@
+# Announcement: to the 2020/07 class, you can skip parts 003, 007, and 008 until after lecture 2
+
+<hr>
+
 # Homework
 
 The homework consists of Go source files including unimplemented functions.
