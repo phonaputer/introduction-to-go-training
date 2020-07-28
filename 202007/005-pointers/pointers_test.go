@@ -2,7 +2,6 @@ package pointers
 
 import (
 	"../testutil"
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"testing"
 )
@@ -62,7 +61,7 @@ func TestSwapStrings_LeftInputNil_DoesNothing(t *testing.T) {
 
 	SwapStrings(nil, &right)
 
-	assert.Equal(t, "hello", right)
+	testutil.AssertEqual(t, "hello", right)
 }
 
 func TestSwapStrings_RightInputNil_DoesNothing(t *testing.T) {
@@ -70,7 +69,7 @@ func TestSwapStrings_RightInputNil_DoesNothing(t *testing.T) {
 
 	SwapStrings(&left, nil)
 
-	assert.Equal(t, "hello", left)
+	testutil.AssertEqual(t, "hello", left)
 }
 
 func TestSwapStrings_BothInputsPresent_ValuesShouldBeSwapped(t *testing.T) {
@@ -79,8 +78,8 @@ func TestSwapStrings_BothInputsPresent_ValuesShouldBeSwapped(t *testing.T) {
 
 	SwapStrings(&left, &right)
 
-	assert.Equal(t, "right", left)
-	assert.Equal(t, "left", right)
+	testutil.AssertEqual(t, "right", left)
+	testutil.AssertEqual(t, "left", right)
 }
 
 func TestSwapStrings_DoubleSwap_ValuesShouldBeSwappedBackToTheirOriginalPositions(t *testing.T) {
@@ -90,8 +89,8 @@ func TestSwapStrings_DoubleSwap_ValuesShouldBeSwappedBackToTheirOriginalPosition
 	SwapStrings(&left, &right)
 	SwapStrings(&left, &right)
 
-	assert.Equal(t, "left", left)
-	assert.Equal(t, "right", right)
+	testutil.AssertEqual(t, "left", left)
+	testutil.AssertEqual(t, "right", right)
 }
 
 // Tests for SumOptionalList
