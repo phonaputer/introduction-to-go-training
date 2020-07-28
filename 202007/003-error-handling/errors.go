@@ -1,6 +1,6 @@
 package errhandle
 
-import "github.com/go-errors/errors"
+import "errors"
 
 // Divide divides numerator by denominator (numerator / denominator) and returns the result.
 // If denominator is 0, it returns an error (it doesn't matter what number you return in the error case).
