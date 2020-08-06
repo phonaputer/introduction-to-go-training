@@ -1,8 +1,8 @@
 package errhandle
 
 import (
-	"../testutil"
 	"errors"
+	"introduction-to-go-training/testutil"
 	"testing"
 )
 

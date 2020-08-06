@@ -6,9 +6,9 @@ You will find `// TODO` comments in all the places you need to add code.
 
 ## Get Started
 
-Please check out a branch with the following format: `yourname/202007`
+Please check out a branch with the following format: `${your name}/${first date of training}`
 
-For example, my branch would be: `neil/202007`
+For example, my branch for a training starting on 2020/09/29 would be: `neil/20200929`
 
 Fill in the empty functions in your branch and push it to origin when you are done.
 
@@ -26,7 +26,7 @@ The unit tests can be run with `go test`.
 For example, you can run the tests for `001-slices` with this command (from the root dir of this Git repo):
 
 ```
-go test 202007/001-slices/*
+go test 001-slices/*
 ```
 
 For the tests in `008-channels` you may want to use the `-timeout` flag.
@@ -34,7 +34,7 @@ Because these tests are concurrent, if there is a bug in your code it may lead t
 Here's an example with a timeout of 10 seconds (which should be reasonable).
 
 ```
-go test -timeout 10s 202007/008-channels/*
+go test -timeout 10s 008-channels/*
 ```
 
 ## When you're done...
@@ -53,7 +53,7 @@ Here are some useful go CLI commands:
 # Format source file
 go fmt ${PATH_TO_SOURCE_FILE}
 
-# Format all source files (run this in the project's root directory)
+# Format all source files (run this in the module's root directory)
 go fmt ./...
 
 # Verify that a source file compiles

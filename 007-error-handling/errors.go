@@ -10,8 +10,10 @@ func Divide(numerator, denominator float64) (float64, error) {
 
 // A UsernameGetter is a function which selects a user from storage using their user ID.
 // If the user is not found, returns NotFoundError. If there is an unexpected error, returns that error.
+// Do not modify this type!
 type UsernameGetter func(userId int) (username string, err error)
 
+// Do not modify this variable!
 var NotFoundError = errors.New("user ID not found!")
 
 // GetUsernameFromDb uses the provided selectUsername function to get a user from storage

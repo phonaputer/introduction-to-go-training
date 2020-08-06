@@ -1,7 +1,7 @@
 package pointers
 
 import (
-	"../testutil"
+	"introduction-to-go-training/testutil"
 	"math/rand"
 	"testing"
 )

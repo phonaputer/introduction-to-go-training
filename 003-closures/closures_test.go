@@ -1,7 +1,7 @@
 package closures
 
 import (
-	"../testutil"
+	"introduction-to-go-training/testutil"
 	"testing"
 )
 
