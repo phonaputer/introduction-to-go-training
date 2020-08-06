@@ -18,7 +18,7 @@ func BuildString(input chan string, result chan string) {
 // It continues to do this until one of two things happens:
 //       1. The input channel is closed
 //		 2. A message comes on the interrupt channel
-// After one of these two things happens, it closes the input channel and returns.
+// After one of these two things happens, it closes the output channel and returns.
 // Notes:
 //       You can check if a channel is closed by reading like this: val, ok := <-input
 //       Check the "strings" package for  string utility functions.
