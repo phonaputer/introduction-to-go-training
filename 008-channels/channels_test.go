@@ -1,7 +1,7 @@
 package channels
 
 import (
-	"../testutil"
+	"introduction-to-go-training/testutil"
 	"testing"
 	"time"
 )

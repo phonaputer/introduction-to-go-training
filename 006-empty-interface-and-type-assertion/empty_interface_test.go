@@ -1,8 +1,8 @@
 package emptyint
 
 import (
-	"../testutil"
 	"errors"
+	"introduction-to-go-training/testutil"
 	"testing"
 )
 
@@ -64,8 +64,24 @@ func TestAddStackTrace_stackTraceError_AddsNewStackLine(t *testing.T) {
 
 	hasStack, ok := res.(HasStackTrace)
 	if ok {
-		testutil.AssertEqual(t, input.Error(), hasStack.Error())
+		testutil.AssertEqual(t, theErr.Error(), hasStack.Error())
 		testutil.AssertEqual(t, "st2 :: st1 :: st0", hasStack.GetStackTrace())
+		return
+	}
+	t.Fatal("Did not return an implementation of HasStackTrace")
+}
+
+func TestAddStackTrace_startWithStackTraceErrorAndCallTwice_AddsTwoNewStackLines(t *testing.T) {
+	theErr := errors.New("bigolerror")
+	input := &stackTraceError{err: theErr, stackTrace: "st1 :: st0"}
+
+	res := AddStackTrace(input, "st2")
+	res = AddStackTrace(res, "st3")
+
+	hasStack, ok := res.(HasStackTrace)
+	if ok {
+		testutil.AssertEqual(t, theErr.Error(), hasStack.Error())
+		testutil.AssertEqual(t, "st3 :: st2 :: st1 :: st0", hasStack.GetStackTrace())
 		return
 	}
 	t.Fatal("Did not return an implementation of HasStackTrace")

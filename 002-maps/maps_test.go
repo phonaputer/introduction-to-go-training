@@ -1,7 +1,7 @@
 package maps
 
 import (
-	"../testutil"
+	"introduction-to-go-training/testutil"
 	"sort"
 	"testing"
 )

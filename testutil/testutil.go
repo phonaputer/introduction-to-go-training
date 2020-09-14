@@ -1,3 +1,5 @@
+// testutil contains handy assertion functions for the unit tests used to grade the homework.
+// To students -- please don't modify this file!
 package testutil
 
 import "testing"

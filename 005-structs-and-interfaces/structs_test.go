@@ -1,7 +1,7 @@
 package structs
 
 import (
-	"../testutil"
+	"introduction-to-go-training/testutil"
 	"reflect"
 	"testing"
 )
@@ -85,6 +85,6 @@ func TestNewDog_ShouldContainCanid(t *testing.T) {
 			foundCanid = true
 		}
 	}
-	testutil.AssertEqualMsg(t, true, foundCanid, "You need to embed the Canid struct in your struct (if you embedded " +
+	testutil.AssertEqualMsg(t, true, foundCanid, "You need to embed the Canid struct in your struct (if you embedded "+
 		"Canid and this test isn't passing try making the embedded Canid the first field in your Dog impl struct)")
 }

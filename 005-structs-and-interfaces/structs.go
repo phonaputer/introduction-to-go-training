@@ -1,6 +1,7 @@
 package structs
 
 // AdderSubber maintains an internal sum which can be modified using the interface's methods
+// Do not modify this interface!
 type AdderSubber interface {
 
 	// Add an integer to the internal sum
@@ -22,6 +23,7 @@ func NewAdderSubber(initialSum int) AdderSubber {
 }
 
 // Dog is an interface representing an individual of the species Canis Familiaris
+// Do not modify this interface!
 type Dog interface {
 
 	// MakeNoise returns a dog noise.
@@ -35,7 +37,8 @@ type Dog interface {
 	SetIsGoodBoy(isGoodBoy bool)
 }
 
-// Use this struct when writing your Dog implementation (But don't modify it. Hint: you can embed structs)
+// Use this struct when writing your Dog implementation.
+// Do not modify this struct! Hint: remember that we talked about embedded structs.
 type Canid struct{}
 
 func (n Canid) MakeNoise() string {
