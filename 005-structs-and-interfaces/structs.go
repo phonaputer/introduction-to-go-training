@@ -39,14 +39,14 @@ type Dog interface {
 
 // Use this struct when writing your Dog implementation.
 // Do not modify this struct! Hint: remember that we talked about embedded structs.
-type Canid struct{}
+type Barker struct{}
 
-func (n Canid) MakeNoise() string {
+func (n Barker) MakeNoise() string {
 	return "BARK BARK!!!!"
 }
 
 // NewDog returns a concrete struct which meets the Dog interface (see above).
-// To solve this problem, you need use the Canid struct in your Dog implementation.
+// To solve this problem, you need use the Barker struct in your Dog implementation.
 // It doesn't matter whether your impl is or is not a good boy by default.
 func NewDog() Dog {
 	return nil // TODO implement
