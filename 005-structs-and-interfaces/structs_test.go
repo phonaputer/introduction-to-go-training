@@ -54,7 +54,7 @@ func TestNewAdderSubber_AddAndSubtract_ShouldAddAndSubtractFromTheSumAsExpected(
 
 // Tests for NewDog
 
-func TestNewDog_MakeNoise_ShouldMakeACanidNoise(t *testing.T) {
+func TestNewDog_MakeNoise_ShouldMakeABarkerNoise(t *testing.T) {
 	dog := NewDog()
 
 	testutil.AssertEqual(t, "BARK BARK!!!!", dog.MakeNoise())
@@ -74,17 +74,17 @@ func TestNewDog_RollOverWhileBad_ShouldNotRollOver(t *testing.T) {
 	testutil.AssertEqual(t, false, dog.RollOver())
 }
 
-func TestNewDog_ShouldContainCanid(t *testing.T) {
+func TestNewDog_ShouldContainBarker(t *testing.T) {
 	dog := NewDog()
 
 	v := reflect.ValueOf(dog)
 	i := reflect.Indirect(v)
-	foundCanid := false
+	foundBarker := false
 	for itr := 0; itr < i.NumField(); itr++ {
-		if "structs.Canid" == i.Field(0).Type().String() {
-			foundCanid = true
+		if "structs.Barker" == i.Field(0).Type().String() {
+			foundBarker = true
 		}
 	}
-	testutil.AssertEqualMsg(t, true, foundCanid, "You need to embed the Canid struct in your struct (if you embedded "+
-		"Canid and this test isn't passing try making the embedded Canid the first field in your Dog impl struct)")
+	testutil.AssertEqualMsg(t, true, foundBarker, "You need to embed the Barker struct in your struct (if you embedded "+
+		"Barker and this test isn't passing try making the embedded Barker the first field in your Dog impl struct)")
 }
