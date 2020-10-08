@@ -29,6 +29,19 @@ For example, you can run the tests for `001-slices` with this command (from the 
 go test 001-slices/*
 ```
 
+### Windows Note:
+
+If you are running the tests on Windows, the above command may not work.
+If that is the case, please try running the above command (still from
+the root dir of this Git repo) using the absolute path to the test folder.
+For example:
+
+```
+go test C:\\Users\rakuten.taro\workspace\introduction-to-go-training\001-slices\
+```
+
+### 008-channels Note:
+
 For the tests in `008-channels` you may want to use the `-timeout` flag.
 Because these tests are concurrent, if there is a bug in your code it may lead to a deadlock.
 Here's an example with a timeout of 10 seconds (which should be reasonable).
