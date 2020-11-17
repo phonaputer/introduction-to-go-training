@@ -41,7 +41,7 @@ type Dog interface {
 // Do not modify this struct! Hint: remember that we talked about embedded structs.
 type Barker struct{}
 
-func (n Barker) MakeNoise() string {
+func (n *Barker) MakeNoise() string {
 	return "BARK BARK!!!!"
 }
 
