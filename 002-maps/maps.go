@@ -17,7 +17,7 @@ func DeleteFromMap(input map[int]int, deleteKeys []int) {
 }
 
 // SetAndGet sets the input key-value pair in the input map. Then it gets getKey from the map and returns the value.
-// If the map is nil, SetAndGet does nothing and returns ""
+// If the map is nil, SetAndGet does nothing and returns the zero value for string
 // If getKey does not exist in the map, returns "NOTEXIST"
 // The get for getKey -should include- what is set for setKey & setVal (do the set before the get)
 func SetAndGet(input map[float64]string, setKey float64, setVal string, getKey float64) string {
