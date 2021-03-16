@@ -17,7 +17,7 @@ func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
 
 // GetAggregator returns a function which maintains an internal state: a counter initialized to zero.
 // It also contains a function which can be used to combine two integers into one integer.
-// The returned function should take string input, combine it with the counter using the above-mentioned function
+// The returned function should take int input, combine it with the counter using the above-mentioned function
 // 		(the internal counter should be the first argument to the function),
 // and return the new value of the counter.
 // E.g.
