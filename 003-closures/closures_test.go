@@ -2,6 +2,7 @@ package closures
 
 import (
 	"introduction-to-go-training/testutil"
+	"strings"
 	"testing"
 )
 
@@ -35,34 +36,56 @@ func TestGetAdderSubber_InitialStateCanBeModifiedWithAdderAndSubber(t *testing.T
 	testutil.AssertEqual(t, 26, curval())
 }
 
-// Tests for GetAggregator
+// Tests for NormalizeStrReader
 
-func TestGetAggregator_AnyInput_InternalStateStartsAtZero(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int { return a })
+func TestNormalizeStrReader_upperTrue_shouldConvertAllOutputToUppercase(t *testing.T) {
+	ctr := 0
+	sr := func() string {
+		ctr++
+		return strings.Repeat("aA", ctr)
+	}
 
-	testutil.AssertEqual(t, 0, aggr(0))
+	nsr := NormalizeStrReader(sr, true)
+
+	testutil.AssertEqual(t, "AA", nsr())
+	testutil.AssertEqual(t, "AAAA", nsr())
+	testutil.AssertEqual(t, "AAAAAA", nsr())
+	testutil.AssertEqual(t, "AAAAAAAA", nsr())
 }
 
-func TestGetAggregator_AdditionFunc_AggrWorksForAddition(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int { return a + b + 5 })
+func TestNormalizeStrReader_upperFalse_shouldConvertAllOutputToLowercase(t *testing.T) {
+	ctr := 0
+	sr := func() string {
+		ctr++
+		return strings.Repeat("Bb", ctr)
+	}
 
-	testutil.AssertEqual(t, 5, aggr(0))
-	testutil.AssertEqual(t, 0, aggr(-10))
-	testutil.AssertEqual(t, 7, aggr(2))
+	nsr := NormalizeStrReader(sr, false)
+
+	testutil.AssertEqual(t, "bb", nsr())
+	testutil.AssertEqual(t, "bbbb", nsr())
+	testutil.AssertEqual(t, "bbbbbb", nsr())
+	testutil.AssertEqual(t, "bbbbbbbb", nsr())
 }
 
-func TestGetAggregator_MultiplicationFunc_AggrWorksForMultiplication(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int { return a*b + 1 })
+func TestNormalizeStrReader_strReaderReturnsEmptyStr_shouldReturnEmptyStr(t *testing.T) {
+	sr := func() string {
+		return ""
+	}
 
-	testutil.AssertEqual(t, 1, aggr(0))
-	testutil.AssertEqual(t, -9, aggr(-10))
-	testutil.AssertEqual(t, -17, aggr(2))
+	nsr := NormalizeStrReader(sr, false)
+
+	testutil.AssertEqual(t, "", nsr())
+	testutil.AssertEqual(t, "", nsr())
 }
 
-func TestGetAggregator_SubtractionFunc_AggrSubtractsInputFromState(t *testing.T) {
-	aggr := GetAggregator(func(a, b int) int { return a - b })
+func TestNormalizeStrReader_strReaderReturnsNumbers_shouldNotChangeStrReaderOutput(t *testing.T) {
+	sr := func() string {
+		return "123.67&"
+	}
 
-	testutil.AssertEqual(t, 0, aggr(0))
-	testutil.AssertEqual(t, 10, aggr(-10))
-	testutil.AssertEqual(t, 8, aggr(2))
+	nsr := NormalizeStrReader(sr, true)
+
+	testutil.AssertEqual(t, "123.67&", nsr())
+	testutil.AssertEqual(t, "123.67&", nsr())
 }

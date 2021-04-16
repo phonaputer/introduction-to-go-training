@@ -15,15 +15,21 @@ func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
 	return nil, nil, nil // TODO implement
 }
 
-// GetAggregator returns a function which maintains an internal state: a counter initialized to zero.
-// It also contains a function which can be used to combine two integers into one integer.
-// The returned function should take int input, combine it with the counter using the above-mentioned function
-// 		(the internal counter should be the first argument to the function),
-// and return the new value of the counter.
+// NormalizeStrReader takes a function and a boolean as input.
+// The input function (strReader) returns a string every time it is called.
+// NormalizeStrReader should return a function which wraps strReader and "normalizes" its output.
+// The output should be normalized by making it either all UPPERCASE or all lowercase.
+// If the "upper" parameter is true, it should be all UPPERCASE. If "upper" is false, all lowercase.
 // E.g.
-//      aggr := GetAggregator( func(x, y int) int { return x - y } )
-// 		aggr(5) // returns -5
-// 		aggr(6) // returns -11
-func GetAggregator(aggregate func(int, int) int) func(int) int {
+//		sr := func() string { return "TeSt OuTpUt" }
+//
+// 		nsr := NormalizeStrReader(sr, true)
+//      nsr() // returns "TEST OUTPUT"
+//
+//     nsrLower := NormalizeStrReader(sr, false)
+//     nsrLower() // returns "test output"
+//
+// Hint: the "strings" standard library package contains ToUpper and ToLower functions.
+func NormalizeStrReader(strReader func() string, upper bool) func() string {
 	return nil // TODO implement
 }

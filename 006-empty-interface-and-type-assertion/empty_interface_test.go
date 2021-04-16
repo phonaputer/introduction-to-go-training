@@ -67,7 +67,7 @@ func (t testStringerImpl) String() string {
 }
 
 func TestAppendIfStringer_stringerInput_returnsConcatenatedStringer(t *testing.T) {
-	inputStruct := testStringerImpl{ Str: "stringerstring"}
+	inputStruct := testStringerImpl{Str: "stringerstring"}
 	inputStr := ": appended string"
 
 	res := AppendIfStringer(inputStruct, inputStr)
