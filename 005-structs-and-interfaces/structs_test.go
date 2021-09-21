@@ -62,14 +62,14 @@ func TestNewDog_MakeNoise_ShouldMakeABarkerNoise(t *testing.T) {
 
 func TestNewDog_RollOverWhileGood_ShouldRollOver(t *testing.T) {
 	dog := NewDog()
-	dog.SetIsGoodBoy(true)
+	dog.SetIsGoodDog(true)
 
 	testutil.AssertEqual(t, true, dog.RollOver())
 }
 
 func TestNewDog_RollOverWhileBad_ShouldNotRollOver(t *testing.T) {
 	dog := NewDog()
-	dog.SetIsGoodBoy(false)
+	dog.SetIsGoodDog(false)
 
 	testutil.AssertEqual(t, false, dog.RollOver())
 }
