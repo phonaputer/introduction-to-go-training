@@ -14,7 +14,7 @@ Fill in the empty functions in your branch and push it to origin when you are do
 
 ## Install Go
 
-To do the homework you will need to install Go 1.16+ on your local machine.
+To do the homework you will need to install Go 1.17+ on your local machine.
 You can do this with your package manager of choice.
 Or you can download an installer (or tar archive) by following the instructions on the Go website: https://golang.org/doc/install
 
