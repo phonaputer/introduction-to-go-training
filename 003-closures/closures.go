@@ -1,5 +1,7 @@
 package closures
 
+import "strings"
+
 // GetAdderSubber returns three functions which share the same state: a sum (initialized to zero).
 // The first two returned functions should take integer input:
 // 		The adder function should add that input to the internal state.
@@ -12,7 +14,16 @@ package closures
 // 		subber(6) // internal sum  is 10
 // 		curVal() // returns 10
 func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
-	return nil, nil, nil // TODO implement
+	sum := 0
+	return func(toAdd int) {
+			sum += toAdd
+		},
+		func(toSub int) {
+			sum -= toSub
+		},
+		func() int {
+			return sum
+		}
 }
 
 // NormalizeStrReader takes a function and a boolean as input.
@@ -31,5 +42,11 @@ func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
 //
 // Hint: the "strings" standard library package contains ToUpper and ToLower functions.
 func NormalizeStrReader(strReader func() string, upper bool) func() string {
-	return nil // TODO implement
+	return func() string {
+		if upper {
+			return strings.ToUpper(strReader())
+		} else {
+			return strings.ToLower(strReader())
+		}
+	}
 }

@@ -7,8 +7,10 @@ package pointers
 //      AddToPointer(&intVar, 3)
 //		fmt.Println(intVar) // 6
 func AddToPointer(ptr *int, amountToAdd int) {
-	&ptr + amountToAdd
-	// TODO implementation
+	if ptr == nil {
+		return
+	}
+	*ptr = *ptr + amountToAdd
 }
 
 // SwapStrings switches the values of two string pointers.
@@ -19,7 +21,12 @@ func AddToPointer(ptr *int, amountToAdd int) {
 // 		SwapStrings(strA, strB)
 // 		fmt.Println(strA + ", " + strB) // "xyz, abc"
 func SwapStrings(a, b *string) {
-	// TODO implementation
+	if a == nil || b == nil {
+		return
+	}
+	temp := *a
+	*a = *b
+	*b = temp
 }
 
 // SumOptionalList sums all integers in the input int pointer list.
@@ -27,5 +34,14 @@ func SwapStrings(a, b *string) {
 // If the list is empty, or contains only nil pointers, returns 0.
 // E.g. for the input list { 4, nil, 5, 2 } it will return 11
 func SumOptionalList(maybeInts []*int) int {
-	return 0 // TODO implementation
+	sum := 0
+	if len(maybeInts) == 0 {
+		return sum
+	}
+	for _, iPtr := range maybeInts {
+		if iPtr != nil {
+			sum += *iPtr
+		}
+	}
+	return sum
 }
