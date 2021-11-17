@@ -3,7 +3,11 @@ package slices
 // SumFloats takes a slice of float64, calculates the sum total of all of them, and returns it
 // If the input is nil, returns 0.0
 func SumFloats(floats []float64) float64 {
-	return 0.0 // TODO implement this
+	var sumValue = float64(0)
+	for _, floatValue := range floats {
+		sumValue = sumValue + floatValue
+	}
+	return sumValue
 }
 
 // GetIntSlice creates a slice of all integers between first and last (inclusive).
@@ -11,7 +15,14 @@ func SumFloats(floats []float64) float64 {
 // For example, GetIntSlice(3, 6) will return: {3, 4, 5, 6}
 // GetIntSlice(11, 11) will return: {11}
 func GetIntSlice(first, last int) []int {
-	return nil // TODO implement this
+	if first > last {
+		return nil
+	}
+	var array []int
+	for i := first; i <= last; i++ {
+		array = append(array, i)
+	}
+	return array
 }
 
 // ConcatenateStringSlices combines two slices of string into a single slice
@@ -20,5 +31,5 @@ func GetIntSlice(first, last int) []int {
 //
 // Hint: there is a way to implement this in one line
 func ConcatenateStringSlices(sliceA, sliceB []string) []string {
-	return nil // TODO implement this
+	return append(sliceA, sliceB...)
 }

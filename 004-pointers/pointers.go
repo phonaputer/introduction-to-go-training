@@ -7,6 +7,7 @@ package pointers
 //      AddToPointer(&intVar, 3)
 //		fmt.Println(intVar) // 6
 func AddToPointer(ptr *int, amountToAdd int) {
+	&ptr + amountToAdd
 	// TODO implementation
 }
 
