@@ -2,14 +2,13 @@ package handler
 
 import (
 	"intro_to_go_codealong/internal/domain"
-	"intro_to_go_codealong/internal/itgerr"
 	"intro_to_go_codealong/internal/view"
 	"net/http"
-	"strconv"
 )
 
 // interfaces needed by customer...
 type CustomerValidator interface {
+	GetOneRequest(*http.Request) (id int, err error)
 	CreateRequest(*http.Request) (*view.CustomerCreateReq, error)
 }
 
@@ -25,16 +24,16 @@ type CustomerRepo interface {
 // customer handler struct
 type Customer struct {
 	customerValidator CustomerValidator
-	customerMapper CustomerMapper
-	customerRepo CustomerRepo
+	customerMapper    CustomerMapper
+	customerRepo      CustomerRepo
 }
 
 // initializer for handler.Customer. similar to a constructor.
 func NewCustomer(customerValidator CustomerValidator, customerMapper CustomerMapper, customerRepo CustomerRepo) *Customer {
 	return &Customer{
 		customerValidator: customerValidator,
-		customerMapper: customerMapper,
-		customerRepo: customerRepo,
+		customerMapper:    customerMapper,
+		customerRepo:      customerRepo,
 	}
 }
 
@@ -59,12 +58,9 @@ func (c *Customer) Create(w http.ResponseWriter, r *http.Request) error {
 
 // GetOne gets the data from one customer
 func (c *Customer) GetOne(w http.ResponseWriter, r *http.Request) error {
-
-	idStr := r.URL.Query().Get("id")
-
-	id, err := strconv.Atoi(idStr)
+	id, err := c.customerValidator.GetOneRequest(r)
 	if err != nil {
-		return itgerr.WithKind(err, itgerr.KindInvalidInput, "id is not valid")
+		return err
 	}
 
 	userData, err := c.customerRepo.GetOneByID(id)
