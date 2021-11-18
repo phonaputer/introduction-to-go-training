@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"intro_to_go_codealong/internal/itgerr"
 )
 
 type Customer struct {
@@ -23,6 +24,9 @@ func (c *Customer) GetOneByID(id int) (string, error) {
 	var middleName *string
 
 	err := row.Scan(&resID, &firstName, &middleName, &lastName, &age)
+	if err == sql.ErrNoRows {
+		return "", itgerr.WithKind(err, itgerr.KindNotFound, "customer not found")
+	}
 	if err != nil {
 		return "", err
 	}

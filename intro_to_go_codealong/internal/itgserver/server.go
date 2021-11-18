@@ -2,6 +2,7 @@ package itgserver
 
 import (
 	"database/sql"
+	"github.com/sirupsen/logrus"
 	"intro_to_go_codealong/internal/client"
 	"intro_to_go_codealong/internal/handler"
 	"intro_to_go_codealong/internal/repository"
@@ -11,17 +12,17 @@ import (
 func Run() {
 	deps, err := injectDependencies()
 	if err != nil {
-		panic(err)
+		logrus.WithError(err).Fatal("error creating deps")
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/customers", http.HandlerFunc(deps.customerHandler.GetOne))
+	mux.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.GetOne))
 
 	server := &http.Server{Addr: ":8080", Handler: mux}
 
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
-		panic(err)
+		logrus.WithError(err).Error("error running server")
 	}
 }
 

@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"fmt"
+	"intro_to_go_codealong/internal/itgerr"
 	"net/http"
+	"strconv"
 )
 
 // interfaces needed by customer...
@@ -23,13 +24,22 @@ func NewCustomer(customerRepo CustomerRepo) *Customer {
 }
 
 // GetOne gets the data from one customer
-func (c *Customer) GetOne(w http.ResponseWriter, r *http.Request) {
-	userData, err := c.customerRepo.GetOneByID(11)
+func (c *Customer) GetOne(w http.ResponseWriter, r *http.Request) error {
+
+	idStr := r.URL.Query().Get("id")
+
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Println(err)
+		return itgerr.WithKind(err, itgerr.KindInvalidInput, "id is not valid")
+	}
+
+	userData, err := c.customerRepo.GetOneByID(id)
+	if err != nil {
+		return err
 	}
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(userData))
+
+	return nil
 }
