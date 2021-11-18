@@ -3,6 +3,7 @@ package itgserver
 import (
 	"context"
 	"database/sql"
+	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"intro_to_go_codealong/internal/client"
 	"intro_to_go_codealong/internal/handler"
@@ -80,10 +81,10 @@ func closeDependencies(deps *dependencies) error {
 }
 
 func setupPathMatching(deps *dependencies) http.Handler {
-	mux := http.NewServeMux()
-	mux.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.GetOne))
-	mux.Handle("/customers-create", handler.ErrRespAdaptor(deps.customerHandler.Create))
+	r := mux.NewRouter()
+	r.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.GetOne)).Methods("GET")
+	r.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.Create)).Methods("POST")
 
-	return mux
+	return r
 }
 
