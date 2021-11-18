@@ -1,12 +1,18 @@
 package itgserver
 
 import (
+	"context"
 	"database/sql"
 	"github.com/sirupsen/logrus"
 	"intro_to_go_codealong/internal/client"
 	"intro_to_go_codealong/internal/handler"
+	"intro_to_go_codealong/internal/mapper"
 	"intro_to_go_codealong/internal/repository"
+	"intro_to_go_codealong/internal/validator"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func Run() {
@@ -15,12 +21,30 @@ func Run() {
 		logrus.WithError(err).Fatal("error creating deps")
 	}
 
-	mux := http.NewServeMux()
-	mux.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.GetOne))
+	server := &http.Server{Addr: ":8080", Handler: setupPathMatching(deps)}
 
-	server := &http.Server{Addr: ":8080", Handler: mux}
+	signalChan := make(chan os.Signal)
+	signal.Notify(signalChan, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGINT)
 
-	err = server.ListenAndServe()
+	go runServer(server)
+
+	recievedSig := <- signalChan
+
+	logrus.WithField("signal", recievedSig).Info("stopping for signal")
+
+	err = server.Shutdown(context.Background())
+	if err != nil {
+		logrus.WithError(err).Error("error shutting down server")
+	}
+
+	err = closeDependencies(deps)
+	if err != nil {
+		logrus.WithError(err).Error("error closing deps")
+	}
+}
+
+func runServer(s *http.Server) {
+	err := s.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		logrus.WithError(err).Error("error running server")
 	}
@@ -42,12 +66,24 @@ func injectDependencies() (*dependencies, error) {
 
 	customerRepo := repository.NewCustomer(db)
 
-	customerHandler := handler.NewCustomer(customerRepo)
+	customerHandler := handler.NewCustomer(&validator.Customer{}, &mapper.Customer{}, customerRepo)
 
 	return &dependencies{
 		db:             db,
 		customerRepo:    customerRepo,
 		customerHandler: customerHandler,
 	}, nil
+}
+
+func closeDependencies(deps *dependencies) error {
+	return deps.db.Close()
+}
+
+func setupPathMatching(deps *dependencies) http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle("/customers", handler.ErrRespAdaptor(deps.customerHandler.GetOne))
+	mux.Handle("/customers-create", handler.ErrRespAdaptor(deps.customerHandler.Create))
+
+	return mux
 }
 

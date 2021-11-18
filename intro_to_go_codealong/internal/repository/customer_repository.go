@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"intro_to_go_codealong/internal/domain"
 	"intro_to_go_codealong/internal/itgerr"
 )
 
@@ -14,6 +15,20 @@ func NewCustomer(db *sql.DB) *Customer {
 	return &Customer{
 		db: db,
 	}
+}
+
+func (c *Customer) Create(customer *domain.Customer) error {
+	_, err := c.db.Exec("INSERT INTO customers (first_name, middle_name, last_name, age) VALUES (?, ?, ?, ?)",
+		customer.FirstName,
+		customer.MiddleName,
+		customer.LastName,
+		customer.Age)
+
+	if err != nil {
+		return fmt.Errorf("error inserting customer: %w", err)
+	}
+
+	return nil
 }
 
 func (c *Customer) GetOneByID(id int) (string, error) {
