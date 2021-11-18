@@ -16,4 +16,3 @@ func Run() {
 		panic(err)
 	}
 }
-
