@@ -29,7 +29,7 @@ func Run() {
 
 	go runServer(server)
 
-	recievedSig := <- signalChan
+	recievedSig := <-signalChan
 
 	logrus.WithField("signal", recievedSig).Info("stopping for signal")
 
@@ -70,7 +70,7 @@ func injectDependencies() (*dependencies, error) {
 	customerHandler := handler.NewCustomer(&validator.Customer{}, &mapper.Customer{}, customerRepo)
 
 	return &dependencies{
-		db:             db,
+		db:              db,
 		customerRepo:    customerRepo,
 		customerHandler: customerHandler,
 	}, nil
@@ -87,4 +87,3 @@ func setupPathMatching(deps *dependencies) http.Handler {
 
 	return r
 }
-

@@ -1,6 +1,5 @@
 package itgerr
 
-
 type Kind int
 
 const (

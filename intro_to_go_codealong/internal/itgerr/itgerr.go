@@ -4,8 +4,8 @@ import "errors"
 
 type itgErr struct {
 	wrapped error
-	kind Kind
-	msg string
+	kind    Kind
+	msg     string
 }
 
 func (i *itgErr) Error() string {
