@@ -22,11 +22,11 @@ func NewAdderSubber(initialSum int) AdderSubber {
 	return nil // TODO implement
 }
 
-// Dog is an interface representing an individual of the species Canis Familiaris
+// Dog is an interface which can be satisfied by an individual of the species Canis Familiaris.
 // Do not modify this interface!
 type Dog interface {
 
-	// MakeNoise returns a dog noise.
+	// MakeNoise returns a dog barking noise.
 	MakeNoise() string
 
 	// RollOver returns a boolean indicating whether the dog rolled over as instructed.
@@ -37,16 +37,23 @@ type Dog interface {
 	SetIsGoodDog(isGoodDog bool)
 }
 
-// Use this struct when writing your Dog implementation.
-// Do not modify this struct! Hint: remember that we talked about embedded structs.
+// Barker is an animal that makes a barking noise.
+//
+// Do not modify this struct!
 type Barker struct{}
 
+// MakeNoise returns the noise that barker makes.
+//
+// Do not modify this Barker method!
 func (n *Barker) MakeNoise() string {
 	return "BARK BARK!!!!"
 }
 
 // NewDog returns a concrete struct which meets the Dog interface (see above).
-// To solve this problem, you need use the Barker struct in your Dog implementation.
+//
+// To solve this problem, you should use the Barker struct in your Dog implementation.
+// Hint: remember that we talked about embedded structs.
+//
 // It doesn't matter whether your impl is or is not a good dog by default.
 func NewDog() Dog {
 	return nil // TODO implement

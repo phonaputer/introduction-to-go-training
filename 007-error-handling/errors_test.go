@@ -23,53 +23,113 @@ func TestDivide_DenominatorIsZero_ReturnsError(t *testing.T) {
 	testutil.AssertErrNil(t, err, false)
 }
 
-// Tests for GetUsernameFromDb
+// Tests for SetCacheFromDB
 
-func TestGetUsernameFromDb_UsernameGetterReturnsNotFound_ReturnsFalseWithNoError(t *testing.T) {
-	inputUserId := 123
-	wasCalled := false
-	getter := func(userId int) (username string, err error) {
-		testutil.AssertEqual(t, inputUserId, userId)
-		wasCalled = true
-		return "", NotFoundError
-	}
-
-	_, resBool, resErr := GetUsernameFromDb(inputUserId, getter)
-
-	testutil.AssertEqualMsg(t, true, wasCalled, "UsernameGetter was not called!")
-	testutil.AssertEqual(t, false, resBool)
-	testutil.AssertErrNil(t, resErr, true)
+type stubUserDB struct {
+	GetUsernameFn func(userID int) (username string, err error)
 }
 
-func TestGetUsernameFromDb_UsernameGetterReturnsUnknownErr_ReturnsError(t *testing.T) {
-	inputUserId := 123
-	wasCalled := false
-	getter := func(userId int) (username string, err error) {
-		testutil.AssertEqual(t, inputUserId, userId)
-		wasCalled = true
-		return "", errors.New("random err")
-	}
-
-	_, _, resErr := GetUsernameFromDb(inputUserId, getter)
-
-	testutil.AssertEqualMsg(t, true, wasCalled, "UsernameGetter was not called!")
-	testutil.AssertErrNil(t, resErr, false)
+func (s *stubUserDB) GetUsername(userID int) (username string, err error) {
+	return s.GetUsernameFn(userID)
 }
 
-func TestGetUsernameFromDb_UsernameGetterReturnsSuccessfully_ReturnsResultAndTrue(t *testing.T) {
-	inputUserId := 123
-	wasCalled := false
-	dbUsername := "usernm"
-	getter := func(userId int) (username string, err error) {
-		testutil.AssertEqual(t, inputUserId, userId)
-		wasCalled = true
-		return dbUsername, nil
-	}
+type stubUserCache struct {
+	SetUsernameFn func(userID int, username string) error
+}
 
-	resUn, resBool, resErr := GetUsernameFromDb(inputUserId, getter)
+func (s *stubUserCache) SetUsername(userID int, username string) error {
+	return s.SetUsernameFn(userID, username)
+}
 
-	testutil.AssertEqualMsg(t, true, wasCalled, "UsernameGetter was not called!")
-	testutil.AssertErrNil(t, resErr, true)
-	testutil.AssertEqual(t, true, resBool)
-	testutil.AssertEqual(t, dbUsername, resUn)
+func TestSetCacheFromDB_UsernameNotFound_ReturnsFalseForExists(t *testing.T) {
+	testUserID := 123
+	dbCalled := false
+	db := &stubUserDB{GetUsernameFn: func(userID int) (string, error) {
+		dbCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to DB")
+		return "", ErrNotFound
+	}}
+	cache := &stubUserCache{SetUsernameFn: func(userID int, username string) error {
+		t.Fatal("cache should not be set when username is not found")
+		return nil
+	}}
+
+	_, exists, err := SetCacheFromDB(testUserID, db, cache)
+
+	testutil.AssertEqualMsg(t, true, dbCalled, "database should be selected from")
+	testutil.AssertErrNil(t, err, true)
+	testutil.AssertEqualMsg(t, false, exists, "userExists should be false when user is not found in DB")
+}
+
+func TestSetCacheFromDB_UnexpectedDBError_ReturnsError(t *testing.T) {
+	testUserID := 123
+	dbCalled := false
+	expectedErr := errors.New("big problem")
+	db := &stubUserDB{GetUsernameFn: func(userID int) (string, error) {
+		dbCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to DB")
+		return "", expectedErr
+	}}
+	cache := &stubUserCache{SetUsernameFn: func(userID int, username string) error {
+		t.Fatal("cache should not be set when DB error occurs")
+		return nil
+	}}
+
+	_, _, err := SetCacheFromDB(testUserID, db, cache)
+
+	testutil.AssertEqualMsg(t, true, dbCalled, "database should be selected from")
+	testutil.AssertEqualMsg(t, true, errors.Is(err, expectedErr),
+		"error from DB should be returned (optionally with stack trace)")
+}
+
+func TestSetCacheFromDB_UnexpectedCacheError_ReturnsError(t *testing.T) {
+	testUserID := 123
+	dbCalled := false
+	cacheResult := "this is the username"
+	db := &stubUserDB{GetUsernameFn: func(userID int) (string, error) {
+		dbCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to DB")
+		return cacheResult, nil
+	}}
+	expectedErr := errors.New("big problem")
+	cacheCalled := false
+	cache := &stubUserCache{SetUsernameFn: func(userID int, username string) error {
+		cacheCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to cache")
+		testutil.AssertEqualMsg(t, cacheResult, username, "DB result username should be input to cache")
+		return expectedErr
+	}}
+
+	_, _, err := SetCacheFromDB(testUserID, db, cache)
+
+	testutil.AssertEqualMsg(t, true, dbCalled, "database should be selected from")
+	testutil.AssertEqualMsg(t, true, cacheCalled, "cache should be set")
+	testutil.AssertEqualMsg(t, true, errors.Is(err, expectedErr),
+		"error from cache should be returned (optionally with stack trace)")
+}
+
+func TestSetCacheFromDB_Success_ReturnsUsernameFromDBAfterSettingCache(t *testing.T) {
+	testUserID := 123
+	dbCalled := false
+	dbResult := "this is the username"
+	db := &stubUserDB{GetUsernameFn: func(userID int) (string, error) {
+		dbCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to DB")
+		return dbResult, nil
+	}}
+	cacheCalled := false
+	cache := &stubUserCache{SetUsernameFn: func(userID int, username string) error {
+		cacheCalled = true
+		testutil.AssertEqualMsg(t, testUserID, userID, "incorrect user ID passed to cache")
+		testutil.AssertEqualMsg(t, dbResult, username, "DB result username should be input to cache")
+		return nil
+	}}
+
+	res, exists, err := SetCacheFromDB(testUserID, db, cache)
+
+	testutil.AssertEqualMsg(t, true, dbCalled, "database should be selected from")
+	testutil.AssertEqualMsg(t, true, cacheCalled, "cache should be set")
+	testutil.AssertEqualMsg(t, dbResult, res, "db selected username should be returned")
+	testutil.AssertEqualMsg(t, true, exists, "user exists result should be true")
+	testutil.AssertErrNil(t, err, true)
 }
