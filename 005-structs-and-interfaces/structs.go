@@ -18,8 +18,27 @@ type AdderSubber interface {
 // The returned AdderSubber will have its sum set to initialSum
 // Note: feel free to define any new types you need to achieve this.
 //		 And remember that receiver arguments (like all Go arguments) are pass-by-value.
+
+type Calculator struct {
+	res int
+}
+
+func (c *Calculator) Add(amount int) {
+	c.res += amount
+}
+func (c *Calculator) Subtract(amount int) {
+	c.res -= amount
+}
+func (c *Calculator) GetCurrentValue() int {
+	return c.res
+}
+
 func NewAdderSubber(initialSum int) AdderSubber {
-	return nil // TODO implement
+	cal := Calculator{res: initialSum}
+	cal.Add(initialSum)
+	cal.Subtract(initialSum)
+	cal.GetCurrentValue()
+	return &cal
 }
 
 // Dog is an interface representing an individual of the species Canis Familiaris
@@ -45,9 +64,28 @@ func (n *Barker) MakeNoise() string {
 	return "BARK BARK!!!!"
 }
 
+type GoodDog struct {
+	barker    Barker
+	isGoodDog bool
+}
+
+func (gd *GoodDog) MakeNoise() string {
+	return gd.barker.MakeNoise()
+}
+func (gd *GoodDog) SetIsGoodDog(isGoodDog bool) {
+	gd.isGoodDog = isGoodDog
+}
+func (gd *GoodDog) RollOver() bool {
+	return gd.isGoodDog
+}
+
 // NewDog returns a concrete struct which meets the Dog interface (see above).
 // To solve this problem, you need use the Barker struct in your Dog implementation.
 // It doesn't matter whether your impl is or is not a good dog by default.
 func NewDog() Dog {
-	return nil // TODO implement
+	goodDog := new(GoodDog)
+	goodDog.SetIsGoodDog(true)
+	goodDog.RollOver()
+	goodDog.MakeNoise()
+	return goodDog
 }

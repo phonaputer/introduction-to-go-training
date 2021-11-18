@@ -9,7 +9,7 @@ func GetKeyValSlice(input map[string]string) []string {
 	for k, v := range input {
 		keyValue = append(keyValue, k+v)
 	}
-	return keyValue // TODO implement
+	return keyValue
 }
 
 // DeleteFromMap deletes a list of keys from a map.
