@@ -14,9 +14,9 @@ Fill in the empty functions in your branch and push it to origin when you are do
 
 ## Install Go
 
-To do the homework you will need to install Go 1.17+ on your local machine.
+To do the homework you will need to install Go 1.18+ on your local machine.
 You can do this with your package manager of choice.
-Or you can download an installer (or tar archive) by following the instructions on the Go website: https://golang.org/doc/install
+Or you can download an installer (or tar archive) by following the instructions on the Go website: https://go.dev/doc/install
 
 ## How to verify your answers locally
 
@@ -40,14 +40,14 @@ For example:
 go test C:\\Users\rakuten.taro\workspace\introduction-to-go-training\001-slices\
 ```
 
-### 008-channels Note:
+### 009-channels Note:
 
-For the tests in `008-channels` you may want to use the `-timeout` flag.
+For the tests in `009-channels` you may want to use the `-timeout` flag.
 Because these tests are concurrent, if there is a bug in your code it may lead to a deadlock.
 Here's an example with a timeout of 10 seconds (which should be reasonable).
 
 ```
-go test -timeout 10s 008-channels/*
+go test -timeout 10s 009-channels/*
 ```
 
 ## When you're done...
