@@ -1,4 +1,4 @@
-# Code-along Demo
+# Demo Application
 
 This is the directory in which the trainer will write the demo application during session 3 of the "Introduction to Go" training.
 
