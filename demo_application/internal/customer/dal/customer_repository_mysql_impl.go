@@ -1,7 +1,7 @@
 package dal
 
 import (
-	logic2 "customer_service/internal/customer/logic"
+	"customer_service/internal/customer/logic"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -9,17 +9,17 @@ import (
 
 func NewCustomerRepositoryMySQLImpl(
 	db *sql.DB,
-) logic2.CustomerRepository {
-	return &customerRepositoryMySQLImpl{
+) *CustomerRepositoryMySQLImpl {
+	return &CustomerRepositoryMySQLImpl{
 		db: db,
 	}
 }
 
-type customerRepositoryMySQLImpl struct {
+type CustomerRepositoryMySQLImpl struct {
 	db *sql.DB
 }
 
-func (c *customerRepositoryMySQLImpl) CreateCustomer(customer *logic2.Customer) (int, error) {
+func (c *CustomerRepositoryMySQLImpl) CreateCustomer(customer *logic.Customer) (int, error) {
 	const query = `INSERT INTO customers 
     						(first_name, middle_name, last_name, age)
     					VALUES 
@@ -38,16 +38,16 @@ func (c *customerRepositoryMySQLImpl) CreateCustomer(customer *logic2.Customer) 
 	return int(newCustomerID), nil
 }
 
-func (c *customerRepositoryMySQLImpl) GetCustomer(id int) (*logic2.Customer, error) {
+func (c *CustomerRepositoryMySQLImpl) GetCustomer(id int) (*logic.Customer, error) {
 	const query = `SELECT first_name, middle_name, last_name, age FROM customers WHERE id=?`
 
 	row := c.db.QueryRow(query, id)
 
-	result := logic2.Customer{ID: id}
+	result := logic.Customer{ID: id}
 
 	err := row.Scan(&result.FirstName, &result.MiddleName, &result.LastName, &result.Age)
 	if errors.Is(err, sql.ErrNoRows) {
-		return nil, logic2.ErrNotFound
+		return nil, logic.ErrNotFound
 	}
 	if err != nil {
 		return nil, fmt.Errorf("SELECT customer: %w", err)

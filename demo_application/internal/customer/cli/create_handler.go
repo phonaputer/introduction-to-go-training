@@ -41,7 +41,7 @@ func (c *createHandler) Handle(args []string) error {
 	}
 
 	// 3. print new customer's ID
-	fmt.Println(fmt.Sprintf("New Customer created with ID: %v", id))
+	fmt.Printf("New Customer created with ID: %v\n", id)
 
 	return nil
 }

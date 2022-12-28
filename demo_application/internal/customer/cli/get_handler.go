@@ -34,15 +34,15 @@ func (g *getHandler) Handle(args []string) error {
 	}
 
 	// 3. print customer
-	fmt.Println(fmt.Sprintf("Customer %v: ", customer.ID))
-	fmt.Println(fmt.Sprintf("First Name: %s", customer.FirstName))
+	fmt.Printf("Customer %v:\n", customer.ID)
+	fmt.Printf("First Name: %s\n", customer.FirstName)
 
 	if customer.MiddleName != nil {
-		fmt.Println(fmt.Sprintf("Middle Name: %s", *customer.MiddleName))
+		fmt.Printf("Middle Name: %s\n", *customer.MiddleName)
 	}
 
-	fmt.Println(fmt.Sprintf("Last Name: %s", customer.LastName))
-	fmt.Println(fmt.Sprintf("Age: %v", customer.Age))
+	fmt.Printf("Last Name: %s\n", customer.LastName)
+	fmt.Printf("Age: %v\n", customer.Age)
 
 	return nil
 }
