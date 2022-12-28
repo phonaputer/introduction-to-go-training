@@ -1,7 +1,7 @@
 package dal
 
 import (
-	"customer_service/internal/customer/logic"
+	"customer_app/internal/customer/logic"
 	"database/sql"
 	"errors"
 	"fmt"

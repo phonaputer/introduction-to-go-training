@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"customer_service/internal/customer/logic"
+	"customer_app/internal/customer/logic"
 	"fmt"
 )
 

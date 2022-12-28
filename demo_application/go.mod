@@ -1,4 +1,4 @@
-module customer_service
+module customer_app
 
 go 1.19
 

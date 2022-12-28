@@ -1,6 +1,6 @@
 package main
 
-import "customer_service/internal/customer"
+import "customer_app/internal/customer"
 
 func main() {
 	customer.RunCLI()

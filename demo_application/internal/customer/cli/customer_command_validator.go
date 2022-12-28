@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"customer_service/internal/customer/logic/cerr"
+	"customer_app/internal/customer/logic/cerr"
 	"encoding/json"
 	"errors"
 	"github.com/sirupsen/logrus"

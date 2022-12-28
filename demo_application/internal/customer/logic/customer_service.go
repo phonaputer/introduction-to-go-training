@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"customer_service/internal/customer/logic/cerr"
+	"customer_app/internal/customer/logic/cerr"
 	"errors"
 	"fmt"
 )

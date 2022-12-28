@@ -1,9 +1,9 @@
 package customer
 
 import (
-	"customer_service/internal/customer/cli"
-	"customer_service/internal/customer/dal"
-	"customer_service/internal/customer/logic"
+	"customer_app/internal/customer/cli"
+	"customer_app/internal/customer/dal"
+	"customer_app/internal/customer/logic"
 	"database/sql"
 	"fmt"
 	"github.com/sirupsen/logrus"

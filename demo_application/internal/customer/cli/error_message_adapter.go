@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"customer_service/internal/customer/logic/cerr"
+	"customer_app/internal/customer/logic/cerr"
 	"fmt"
 	"github.com/sirupsen/logrus"
 )
