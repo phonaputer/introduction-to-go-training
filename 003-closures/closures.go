@@ -1,18 +1,36 @@
 package closures
 
+import "strings"
+
 // GetAdderSubber returns three functions which share the same state: a sum (initialized to zero).
 // The first two returned functions should take integer input:
-// 		The adder function should add that input to the internal state.
-//		The subber function should subtract that input from the internal state.
+//
+//	The adder function should add that input to the internal state.
+//	The subber function should subtract that input from the internal state.
+//
 // The third function just returns the current value of the internal sum.
 // E.g.
-//      adder, subber, curVal := GetAdderSubber()
-// 		adder(5) // internal sum is 5
-// 		adder(11) // internal sum is 16
-// 		subber(6) // internal sum  is 10
-// 		curVal() // returns 10
+//
+//	     adder, subber, curVal := GetAdderSubber()
+//			adder(5) // internal sum is 5
+//			adder(11) // internal sum is 16
+//			subber(6) // internal sum  is 10
+//			curVal() // returns 10
 func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
-	return nil, nil, nil // TODO implement
+	var internalState int = 0
+
+	adder = func(value int) {
+		internalState += value
+	}
+
+	subber = func(value int) {
+		internalState -= value
+	}
+
+	curVal = func() int {
+		return internalState
+	}
+	return adder, subber, curVal
 }
 
 // NormalizeStrReader takes a function and a boolean as input.
@@ -21,15 +39,26 @@ func GetAdderSubber() (adder func(int), subber func(int), curVal func() int) {
 // The output should be normalized by making it either all UPPERCASE or all lowercase.
 // If the "upper" parameter is true, it should be all UPPERCASE. If "upper" is false, all lowercase.
 // E.g.
-//		sr := func() string { return "TeSt OuTpUt" }
 //
-// 		nsr := NormalizeStrReader(sr, true)
-//      nsr() // returns "TEST OUTPUT"
+//			sr := func() string { return "TeSt OuTpUt" }
 //
-//     nsrLower := NormalizeStrReader(sr, false)
-//     nsrLower() // returns "test output"
+//			nsr := NormalizeStrReader(sr, true)
+//	     nsr() // returns "TEST OUTPUT"
+//
+//	    nsrLower := NormalizeStrReader(sr, false)
+//	    nsrLower() // returns "test output"
 //
 // Hint: the "strings" standard library package contains ToUpper and ToLower functions.
 func NormalizeStrReader(strReader func() string, upper bool) func() string {
-	return nil // TODO implement
+
+	if upper {
+		return func() string {
+			var result string = strReader()
+			return strings.ToUpper(result)
+		}
+	}
+	return func() string {
+		var result string = strReader()
+		return strings.ToLower(result)
+	}
 }
