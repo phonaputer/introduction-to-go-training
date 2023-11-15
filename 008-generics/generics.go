@@ -4,6 +4,7 @@ package generics
 // with the generic IsInRange function.
 type RangeCheckable interface {
 	// TODO add a type set here
+	int | float64 | uint
 }
 
 // IsInRange checks that the input "value" is between (inclusive) "min" and "max."
@@ -14,9 +15,7 @@ type RangeCheckable interface {
 // TODO Important Note! You will need to change the type constraint interface (RangeCheckable) above
 // to match the required types.
 func IsInRange[T RangeCheckable](min T, max T, value T) bool {
-
-	return false // TODO implement
-
+	return min <= value && value <= max
 }
 
 // Nillable represents a nillable value in a way that prevents nil pointer errors.
@@ -35,8 +34,10 @@ type Nillable[T any] struct {
 // If the pointer is nil, the Nillable should also be "nil."
 // And if the pointer is not nil, the Nillable should contain its value.
 func PointerToNillable[T any](value *T) Nillable[T] {
-
-	return Nillable[T]{} // TODO implement
+	if value == nil {
+		return Nillable[T]{IsNil: true, Value: *new(T)}
+	}
+	return Nillable[T]{IsNil: false, Value: *value} // TODO implement
 
 }
 
@@ -59,8 +60,24 @@ type LinkedNode[T any] interface {
 // It also takes "next" which is the next LinkedNode[T] in the list after this one.
 //
 // TODO write your own implementation of the "LinkedNode[T]" interface. And use it to implement this function.
+type LinkedNodeImplementation[T any] struct {
+	value    T
+	nextNode LinkedNode[T]
+}
+
+func (node *LinkedNodeImplementation[T]) Value() T {
+	return node.value
+}
+
+func (node *LinkedNodeImplementation[T]) Next() (LinkedNode[T], bool) {
+	if node.nextNode == nil {
+		return nil, false
+	}
+	return node.nextNode, true
+}
+
 func NewLinkedNode[T any](value T, next LinkedNode[T]) LinkedNode[T] {
 
-	return nil // TODO implement
+	return &LinkedNodeImplementation[T]{value: value, nextNode: next}
 
 }
