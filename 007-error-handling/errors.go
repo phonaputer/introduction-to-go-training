@@ -8,7 +8,10 @@ import (
 //
 // If denominator is 0, Divide returns an error (it doesn't matter what number you return in the error case).
 func Divide(numerator, denominator float64) (float64, error) {
-	return 0.0, nil // TODO implement
+	if denominator == 0 {
+		return 0, errors.New("Error: Division by zero")
+	}
+	return numerator / denominator, nil
 }
 
 // Do not modify this type!
@@ -39,25 +42,44 @@ var ErrNotFound = errors.New("user not found!")
 // This function is used for refreshing a cache when it has expired.
 //
 // SetCacheFromDB has three arguments:
-//    1. userID - ID of the user to select from DB and insert into cache
-//    2. db - A user database repository which can be used to get user info from the DB
-//    3. cache - A user cache repository which can be used to set user info in the cache
+//  1. userID - ID of the user to select from DB and insert into cache
+//  2. db - A user database repository which can be used to get user info from the DB
+//  3. cache - A user cache repository which can be used to set user info in the cache
 //
 // SetCacheFromDB has three results:
-//    1. username - The username found in DB, if any. In an error case the value of this result is undefined.
-//    2. userExists - True if the user was found in DB. False otherwise.
-//    3. err - Err will not be nil only if an *unhandled* error occurs in SetCacheFromDB.
+//  1. username - The username found in DB, if any. In an error case the value of this result is undefined.
+//  2. userExists - True if the user was found in DB. False otherwise.
+//  3. err - Err will not be nil only if an *unhandled* error occurs in SetCacheFromDB.
 //
 // This function should do the following:
 //
-//    Get info for userID from DB
-//      * if user not found -> handle error (see comment about "err" result) and return that the user does not exist
-//      * if unexpected error -> pass this unhandled error up the call stack for handling elsewhere
+//	Get info for userID from DB
+//	  * if user not found -> handle error (see comment about "err" result) and return that the user does not exist
+//	  * if unexpected error -> pass this unhandled error up the call stack for handling elsewhere
 //
-//    Set the info selected from DB into cache
-//      * if unexpected error -> pass this unhandled error up the call stack for handling elsewhere
+//	Set the info selected from DB into cache
+//	  * if unexpected error -> pass this unhandled error up the call stack for handling elsewhere
 //
-//    Return the username from DB & return that the user exists
+//	Return the username from DB & return that the user exists
 func SetCacheFromDB(userID int, db UserDB, cache UserCache) (username string, userExists bool, err error) {
-	return "", false, nil //TODO implement
+	usernameFromDB, dBerror := db.GetUsername(userID)
+
+	if dBerror != nil {
+		if dBerror == ErrNotFound {
+			// User not found in DB
+			return "", false, nil
+		}
+		// Unexpected error, pass it up the call stack
+		return "", false, dBerror
+	}
+
+	// Set the info selected from DB into cache
+	cacheError := cache.SetUsername(userID, usernameFromDB)
+	if cacheError != nil {
+		// Unexpected error in setting cache, pass it up the call stack
+		return "", false, cacheError
+	}
+
+	// Return the username from DB and indicate that the user exists
+	return usernameFromDB, true, nil
 }
