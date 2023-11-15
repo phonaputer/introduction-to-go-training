@@ -17,9 +17,25 @@ type AdderSubber interface {
 // NewAdderSubber returns a concrete implementation of the AdderSubber interface.
 // The returned AdderSubber will have its sum set to initialSum
 // Note: feel free to define any new types you need to achieve this.
-//		 And remember that receiver arguments (like all Go arguments) are pass-by-value.
+//
+//	And remember that receiver arguments (like all Go arguments) are pass-by-value.
+type AdderSubberImplementation struct {
+	sum int
+}
+
+func (adderSubber *AdderSubberImplementation) Add(amount int) {
+	adderSubber.sum += amount
+}
+
+func (adderSubber *AdderSubberImplementation) Subtract(amount int) {
+	adderSubber.sum -= amount
+}
+
+func (adderSubber *AdderSubberImplementation) GetCurrentValue() int {
+	return adderSubber.sum
+}
 func NewAdderSubber(initialSum int) AdderSubber {
-	return nil // TODO implement
+	return &AdderSubberImplementation{initialSum}
 }
 
 // Dog is an interface which can be satisfied by an individual of the species Canis Familiaris.
@@ -55,6 +71,21 @@ func (n *Barker) MakeNoise() string {
 // Hint: remember that we talked about embedded structs.
 //
 // It doesn't matter whether your impl is or is not a good dog by default.
+type RealDog struct {
+	Barker
+	dogAttitude bool
+}
+
+func (realDog *RealDog) RollOver() bool {
+	if realDog.dogAttitude {
+		return true
+	}
+	return false
+}
+
+func (realDog *RealDog) SetIsGoodDog(isGoodDog bool) {
+	realDog.dogAttitude = isGoodDog
+}
 func NewDog() Dog {
-	return nil // TODO implement
+	return &RealDog{}
 }
